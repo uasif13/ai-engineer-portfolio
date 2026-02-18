@@ -231,5 +231,147 @@
     "role": "assistant",
     "content": "**Feedback:** Excellent! That's exactly the right approach and shows strong algorithmic thinking.\n\n**Your solution is optimal:**\n- **Time complexity:** O(n log 10) = O(n) - since heap operations on size-10 heap are effectively constant \u2705\n- **Space complexity:** O(10) = O(1) \u2705\n- **Memory efficient:** Only stores 10 elements instead of sorting all 1M \u2705\n\nHere's the implementation:\n```python\nimport heapq\n\ndef find_top_10(nums):\n    heap = []\n    \n    for num in nums:\n        if len(heap) < 10:\n            heapq.heappush(heap, num)\n        elif num > heap[0]:  # num > min element\n            heapq.heapreplace(heap, num)\n    \n    return sorted(heap, reverse=True)  # Return in descending order\n```\n\n**Why this beats alternatives:**\n- `sorted(nums)[-10:]` would be O(n log n) time\n- `heapq.nlargest(10, nums)` is also O(n log 10) but your approach is more explicit\n\n**Interview Complete! \ud83c\udf89**\n\n**Overall Assessment:**\n- **Python fundamentals:** Strong (just mixed up stack/queue initially)\n- **Data structures:** Very good - excellent heap knowledge\n- **System design:** Good foundation, room to grow on distributed systems\n- **Problem solving:** Excellent - you chose optimal algorithms\n\n**Areas to review:** Basic data structure definitions (LIFO/FIFO), but your practical understanding is solid!\n\nGreat job, Asif!",
     "timestamp": "2026-02-18T16:24:34.206843"
+  },
+  {
+    "role": "user",
+    "content": "start interview",
+    "timestamp": "2026-02-18T16:33:40.367684"
+  },
+  {
+    "role": "assistant",
+    "content": "Welcome to your technical interview, Asif! I'll be asking you questions covering Python, data structures, and system design. Let's begin.\n\n**Question 1:**\n\nWhat's the difference between `==` and `is` in Python? Give me an example where they would return different results.",
+    "timestamp": "2026-02-18T16:33:43.899367"
+  },
+  {
+    "role": "user",
+    "content": "== is an equality comparison and is is a type comparison. 1 == int and 1 is int",
+    "timestamp": "2026-02-18T16:34:44.985458"
+  },
+  {
+    "role": "assistant",
+    "content": "**Feedback:** You're on the right track but there are some corrections needed:\n\n**What you got right:**\n- `==` is for equality comparison \u2705\n\n**Corrections:**\n- `is` checks for **identity** (same object in memory), not type comparison\n- For type checking, you'd use `type()` or `isinstance()`\n\n**Your example has syntax issues:**\n```python\n# This would cause errors:\n1 == int  # Comparing number to a type\n1 is int  # Comparing number to a type\n```\n\n**Correct examples:**\n```python\n# == vs is\na = [1, 2, 3]\nb = [1, 2, 3]\nc = a\n\nprint(a == b)  # True (same values)\nprint(a is b)  # False (different objects)\nprint(a is c)  # True (same object)\n\n# Another example:\nx = 1000\ny = 1000\nprint(x == y)  # True (same value)\nprint(x is y)  # False (different objects for large numbers)\n```\n\n**Next Question:**\nWhat is the time complexity of inserting an element at the beginning of a Python list, and why?",
+    "timestamp": "2026-02-18T16:34:51.408852"
+  },
+  {
+    "role": "user",
+    "content": "O(n) need to shift the entire list down",
+    "timestamp": "2026-02-18T16:35:34.124524"
+  },
+  {
+    "role": "assistant",
+    "content": "**Feedback:** Excellent! You're absolutely correct.\n\n**Your answer is spot-on:**\n- Time complexity: O(n) \u2705\n- Reason: Need to shift all existing elements one position to the right \u2705\n\nWhen you do `my_list.insert(0, new_element)`, Python has to:\n1. Move element at index 0 to index 1\n2. Move element at index 1 to index 2\n3. Continue for all n elements\n4. Then place the new element at index 0\n\n**Example:**\n```python\nmy_list = [1, 2, 3, 4, 5]\nmy_list.insert(0, 0)  # O(n) operation\n# Result: [0, 1, 2, 3, 4, 5]\n```\n\n**Better alternatives for frequent insertions at the beginning:**\n- `collections.deque` - O(1) insertions at both ends\n- Consider if you actually need index-based access\n\n**Next Question:**\nExplain what a hash collision is and name two common strategies for handling them.",
+    "timestamp": "2026-02-18T16:35:39.662801"
+  },
+  {
+    "role": "user",
+    "content": "start interview",
+    "timestamp": "2026-02-18T16:48:18.252316",
+    "usage_output_input": 0,
+    "usage_output_output": 0,
+    "mode": "interview"
+  },
+  {
+    "role": "assistant",
+    "content": "Welcome to your technical interview, Asif! I'll be asking you questions covering Python, data structures, and system design. Let's get started.\n\n**Question 1:**\n\nWhat happens when you modify a list while iterating over it in Python? Give me an example and explain the potential issues.",
+    "timestamp": "2026-02-18T16:48:20.544188",
+    "usage_output_input": 6328,
+    "usage_output_output": 66,
+    "mode": "interview"
+  },
+  {
+    "role": "user",
+    "content": "if you modify a list in python, the size of the list could change. This can cause indexoutofbounds error",
+    "timestamp": "2026-02-18T16:48:55.339944",
+    "usage_output_input": 6328,
+    "usage_output_output": 66,
+    "mode": "interview"
+  },
+  {
+    "role": "assistant",
+    "content": "**Feedback:** Good start! You correctly identified that modifying a list during iteration can cause problems, and index errors are one potential issue.\n\n**What you got right:**\n- Recognized that list size changes during iteration cause problems \u2705\n- IndexError is one possible outcome \u2705\n\n**Let me expand on this:**\n\n**Main issues:**\n1. **Skipping elements** (most common)\n2. **IndexError** (when removing elements)\n3. **Infinite loops** (when adding elements)\n\n**Example of skipping:**\n```python\nnumbers = [1, 2, 3, 4, 5]\nfor i, num in enumerate(numbers):\n    if num % 2 == 0:\n        numbers.remove(num)  # This skips the next element!\n        \n# Result: [1, 3, 5] - but 4 was skipped, not removed!\n```\n\n**Safe alternatives:**\n- Iterate backwards: `for i in range(len(numbers)-1, -1, -1)`\n- Create a new list: `new_list = [x for x in numbers if condition]`\n- Use list comprehension or filter()\n\n**Next Question:**\nWhat's the difference between a shallow copy and a deep copy in Python? When would you use each?",
+    "timestamp": "2026-02-18T16:49:02.478096",
+    "usage_output_input": 12750,
+    "usage_output_output": 365,
+    "mode": "interview"
+  },
+  {
+    "role": "user",
+    "content": "a shallow copy only copies a reference to object and not its contents. I would only use shallow copy for primitives and deep copy for iterables and sequences",
+    "timestamp": "2026-02-18T16:50:21.142655",
+    "usage_output_input": 12750,
+    "usage_output_output": 365,
+    "mode": "interview"
+  },
+  {
+    "role": "assistant",
+    "content": "**Feedback:** You have the concepts partially correct but there are some important clarifications needed:\n\n**Corrections:**\n- **Shallow copy** actually DOES copy the object, but only copies references to nested objects\n- **Deep copy** copies the entire object hierarchy recursively\n\n**Better explanation:**\n```python\nimport copy\n\noriginal = [[1, 2], [3, 4]]\n\n# Shallow copy\nshallow = copy.copy(original)  # or original.copy()\nshallow[0][0] = 'X'\nprint(original)  # [['X', 2], [3, 4]] - original affected!\n\n# Deep copy  \ndeep = copy.deepcopy(original)\ndeep[0][0] = 'Y' \nprint(original)  # [['X', 2], [3, 4]] - original NOT affected\n```\n\n**When to use:**\n- **Shallow copy:** When you need independent top-level structure but can share nested objects (more memory efficient)\n- **Deep copy:** When you need complete independence between objects (but more expensive)\n\n**Note:** For primitives (int, string, etc.), assignment creates new references anyway since they're immutable.\n\n**Next Question:**\nExplain the Global Interpreter Lock (GIL) in Python and how it affects multithreading performance.",
+    "timestamp": "2026-02-18T16:50:27.686757",
+    "usage_output_input": 19505,
+    "usage_output_output": 668,
+    "mode": "interview"
+  },
+  {
+    "role": "user",
+    "content": "i dont know what that is",
+    "timestamp": "2026-02-18T16:50:49.984738",
+    "usage_output_input": 19505,
+    "usage_output_output": 668,
+    "mode": "interview"
+  },
+  {
+    "role": "assistant",
+    "content": "**Feedback:** That's perfectly honest! The GIL is an advanced Python topic that many developers don't encounter until they work with threading.\n\n**Quick explanation:**\nThe **Global Interpreter Lock (GIL)** is a mutex that prevents multiple threads from executing Python code simultaneously. This means:\n\n- Only **one thread** can execute Python bytecode at a time\n- **CPU-bound** multithreading doesn't improve performance (can even make it worse)\n- **I/O-bound** tasks can still benefit from threading (thread releases GIL during I/O)\n\n**Workarounds:**\n- Use `multiprocessing` instead of `threading` for CPU-bound tasks\n- Use async/await for I/O-bound tasks\n- Use libraries written in C (like NumPy) that release the GIL\n\nDon't worry - this is something you learn when you need it!\n\n**Next Question (easier):**\nWhat's the difference between a Python list and a dictionary in terms of:\n1. How you access elements\n2. Time complexity for lookups",
+    "timestamp": "2026-02-18T16:50:56.791409",
+    "usage_output_input": 26572,
+    "usage_output_output": 909,
+    "mode": "interview"
+  },
+  {
+    "role": "user",
+    "content": "a python list is accessed by the index. a dictionary is accessed by the keys. the list lookup given an index is o(1) and it takes o(n) to find an element. the dict loopup given a key is o(1) and it takes o(n) to find a specific value",
+    "timestamp": "2026-02-18T16:52:10.652024",
+    "usage_output_input": 26572,
+    "usage_output_output": 909,
+    "mode": "interview"
+  },
+  {
+    "role": "assistant",
+    "content": "**Feedback:** Excellent! You demonstrated a clear understanding of both data structures and their performance characteristics.\n\n**What you got perfectly right:**\n- List access by index: O(1) \u2705\n- List search for element: O(n) \u2705\n- Dictionary access by key: O(1) average \u2705\n- Dictionary search for specific value: O(n) \u2705\n\n**Example to illustrate:**\n```python\nmy_list = [10, 20, 30, 40]\nmy_dict = {'a': 10, 'b': 20, 'c': 30, 'd': 40}\n\n# Fast operations - O(1)\nprint(my_list[2])      # 30 - direct index access\nprint(my_dict['c'])    # 30 - direct key access\n\n# Slow operations - O(n)  \nprint(30 in my_list)   # True - must scan the list\nprint(30 in my_dict.values())  # True - must scan all values\n```\n\n**Minor note:** Dictionary lookup is O(1) *average* case due to hash collisions, but this is excellent understanding overall!\n\n**Next Question:**\nYou need to design a system to handle 1 million concurrent users viewing a read-heavy website (like a news site). What are the key architectural components you'd include?",
+    "timestamp": "2026-02-18T16:52:17.095862",
+    "usage_output_input": 33948,
+    "usage_output_output": 1224,
+    "mode": "interview"
+  },
+  {
+    "role": "user",
+    "content": "if its a read-heavy site, i would use caching and cdns to allow lower latencies closer to the users. I would use load balancers on read-only copies of the database to ensure scalabiltiy when working with 1 million concurrent users. As hinted at, I would keep a master database with read/write permissions and multiple read replicas for faster read. I would use indexes since the website is read-heavy",
+    "timestamp": "2026-02-18T16:54:05.750356",
+    "usage_output_input": 33948,
+    "usage_output_output": 1224,
+    "mode": "interview"
+  },
+  {
+    "role": "assistant",
+    "content": "**Feedback:** Excellent answer! You showed strong system design understanding for a read-heavy architecture.\n\n**What you nailed:**\n- **CDNs** for static content delivery \u2705\n- **Caching** for reduced latency \u2705\n- **Load balancers** for distributing traffic \u2705\n- **Read replicas** with master/slave database setup \u2705\n- **Database indexes** for query optimization \u2705\n\n**Your architecture covers the key scalability patterns perfectly!**\n\n**Additional considerations for 1M concurrent users:**\n- **Application-level caching** (Redis/Memcached) between app servers and database\n- **Horizontal scaling** of web servers behind load balancers\n- **Database sharding** if read replicas aren't enough\n- **Monitoring/observability** to identify bottlenecks\n\n**Architecture flow:**\n```\nUsers \u2192 CDN \u2192 Load Balancer \u2192 Web Servers \u2192 Cache \u2192 Read Replicas\n                                      \u2193\n                               Master DB (writes only)\n```\n\n**Outstanding system design thinking!** You clearly understand how to handle scale with appropriate patterns.\n\n**Final Question:**\nWhat's the time complexity of finding the intersection of two sorted arrays of sizes m and n? Describe your approach.",
+    "timestamp": "2026-02-18T16:54:13.056688",
+    "usage_output_input": 41735,
+    "usage_output_output": 1511,
+    "mode": "interview"
+  },
+  {
+    "role": "user",
+    "content": "The time complexity would be O(log m + log n). I would use binary search on the array- if the value at m is less than n, go right on m and left on n, otherwise go in the reverse of this",
+    "timestamp": "2026-02-18T16:56:21.359855",
+    "usage_output_input": 41735,
+    "usage_output_output": 1511,
+    "mode": "interview"
+  },
+  {
+    "role": "assistant",
+    "content": "**Feedback:** I can see you're thinking about binary search, but there's some confusion in your approach. Let me clarify:\n\n**Issues with your answer:**\n- The complexity O(log m + log n) would be for finding a single element, not an intersection\n- Your binary search description doesn't quite work for finding all common elements\n- Binary search alone won't efficiently find all intersecting elements\n\n**Better approach - Two Pointers:** O(m + n)\n```python\ndef intersection(arr1, arr2):\n    i, j = 0, 0\n    result = []\n    \n    while i < len(arr1) and j < len(arr2):\n        if arr1[i] == arr2[j]:\n            result.append(arr1[i])\n            i += 1\n            j += 1\n        elif arr1[i] < arr2[j]:\n            i += 1\n        else:\n            j += 1\n    \n    return result\n```\n\n**Alternative - Binary search approach:** O(m log n) or O(n log m)\nFor each element in smaller array, binary search in larger array.\n\n**The two-pointer approach is optimal** since we need to potentially examine all elements anyway.\n\n**Interview Complete! \ud83c\udf89**\n\n**Overall Assessment:**\n- **Python fundamentals:** Good understanding\n- **Data structures:** Strong - excellent on lists vs dictionaries\n- **System design:** Very impressive! Great scalability thinking\n- **Algorithms:** Good foundation, some advanced concepts to work on\n\n**Strengths:** System design, practical understanding of data structures\n**Areas to improve:** Some advanced algorithms (intersection, GIL concepts)\n\nGreat job overall, Asif!",
+    "timestamp": "2026-02-18T16:56:30.280878",
+    "usage_output_input": 49860,
+    "usage_output_output": 1901,
+    "mode": "interview"
   }
 ]
